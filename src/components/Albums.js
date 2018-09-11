@@ -14,7 +14,8 @@
 
 import React, {Component} from 'react';
 import Album from "./Album";
-import Artist from "./Artist";
+import SearchBar from './SearchBar';
+
 const REQUEST_URL = "https://itunes.apple.com/search";
 
 
@@ -24,58 +25,125 @@ class Albums extends Component {
     this.state = {
       albums: {},
       searchTerm: "Phish"
-    }
+    };
+    this._handleInputChange = this._handleInputChange.bind(this);
+    this._requestAlbums = this._requestAlbums.bind(this);
   }
 
   componentDidMount = () => {
     this._requestAlbums();
-  }
+  };
 
-  _requestAlbums = (artist="Phish") => {
+  _handleInputChange = (event) => {
+    if (event.keyCode === 13) {
+      this._requestAlbums();
+    }
+    this.setState({searchTerm: event.target.value})
+  };
+
+  _requestAlbums = () => {
     const self = this;
+    const artist = this.state.searchTerm;
+
     fetch(
       `${REQUEST_URL}?term=${artist}`)
       .then(function (response) {
         return response.json();
       })
       .then(function (myJson) {
+        self.setState({searchTerm: ''});
+
         let albums = [];
         myJson.results.forEach(song => {
-          albums.find(a => a.id === song.collectionId) ||
-          albums.push({
-            "id": song.collectionId,
-            "title": song.collectionName,
-            "cover": song.artworkUrl100,
-            "url": song.collectionViewUrl,
-            "artistUrl": song.artistViewUrl,
-          })
+          let album = albums.find(a => a.id === song.collectionId);
+
+          /* Add song to existing album */
+          if (album) {
+            album.tracks[song.trackNumber] = {
+              name: song.trackName,
+              trackUrl: "trackViewUrl"
+            }
+          }
+          else {
+            /* Add new album */
+            album = {
+              "id": song.collectionId,
+              "title": song.collectionName,
+              "cover": song.artworkUrl100,
+              "url": song.collectionViewUrl,
+              "artistUrl": song.artistViewUrl,
+              "artist": song.artistName,
+              "totalTracks": song.trackCount
+            };
+            albums.push(album);
+            album.tracks = new Array(song.trackCount);
+            album.tracks[song.trackNumber] = {
+              name: song.trackName,
+              url: song.trackViewUrl,
+            }
+          }
         });
-        self.setState({albums: albums});
+        self.setState({albums: albums, searchTerm: artist});
       })
-  }
+  };
 
   render() {
     const albums = this.state.albums;
-    const searchTerm = this.state.searchTerm;
     return (
-      <div>
-        {albums && albums.length > 0 &&
+      <div style={styles.container}>
+        <div style={styles.pageTitle}> Search the Itunes Store!!! </div>
+
         <div>
-          <Artist name={searchTerm} url={this.state.albums[0].artistUrl}/>
+          <SearchBar
+            handleClick={this._requestAlbums}
+            handleInputChange={this._handleInputChange}/>
+
+          <div style={styles.resultsBanner}>
+            Search Results
+          </div>
+
+          <div>
+            {albums && albums.length > 0 &&
+            albums.map((album, index) =>{
+                return (
+                  <div key={index}>
+                    <Album
+                      artist={album.artist}
+                      artistUrl={album.artistUrl}
+                      title={album.title}
+                      cover={album.cover}
+                      url={album.url}
+                      tracks={album.tracks}
+                      trackCount={album.totalTracks}
+                    />
+                  </div>
+                )
+              }
+            )}
+          </div>
         </div>
-        }
-        {albums && albums.length > 0 &&
-        albums.map(album=>{
-            return (
-              <div>
-                <Album title={album.title} cover={album.cover} url={album.url}/>
-              </div>
-            )
-          }
-        )}
       </div>
     );
   }
 }
+
+
+const styles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    backgroundColor: '#D1BCE3'
+  },
+  pageTitle: {
+    fontSize: 48,
+    fontWeight: 600,
+    marginBottom: 10
+  },
+  resultsBanner: {
+    fontWeight: 500,
+    fontSize: 24
+  }
+};
 
 export default Albums;

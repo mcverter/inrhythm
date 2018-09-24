@@ -27,7 +27,7 @@ class Albums extends Component {
       searchTerm: "Phish"
     };
     this._handleInputChange = this._handleInputChange.bind(this);
-    this._requestAlbums = this._requestAlbums.bind(this);
+    this._handleSubmit = this._handleSubmit.bind(this);
   }
 
   componentDidMount = () => {
@@ -35,10 +35,12 @@ class Albums extends Component {
   };
 
   _handleInputChange = (event) => {
-    if (event.keyCode === 13) {
-      this._requestAlbums();
-    }
     this.setState({searchTerm: event.target.value})
+  };
+
+  _handleSubmit = (event) => {
+    event.preventDefault();
+    this._requestAlbums();
   };
 
   _requestAlbums = () => {
@@ -95,7 +97,7 @@ class Albums extends Component {
 
         <div>
           <SearchBar
-            handleClick={this._requestAlbums}
+            handleSubmit={this._handleSubmit}
             handleInputChange={this._handleInputChange}/>
 
           <div style={styles.resultsBanner}>

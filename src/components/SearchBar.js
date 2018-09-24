@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 class SearchBar extends Component {
   render() {
-    const {handleInputChange, handleClick} = this.props;
+    const {handleInputChange, handleSubmit} = this.props;
     return (
-      <div style={styles.container}>
-        <input style={{marginBottom: 5}} onKeyUp={handleInputChange} />
-        <button onClick={handleClick}>Submit</button>
-      </div>
+      <form onSubmit={handleSubmit} style={styles.container}>
+        <input style={{marginBottom: 5}} onChange={handleInputChange} />
+        <button type="submit">Submit</button>
+      </form>
     );
   }
 }
@@ -24,7 +24,7 @@ const styles = {
 
 SearchBar.propTypes = {
   handleInputChange: PropTypes.func,
-  handleClick: PropTypes.func
+  handleSubmit: PropTypes.func
 };
 
 export default SearchBar;

@@ -261,6 +261,38 @@ assert(! isOneAway('pale', 'palers'));
  "compressed" string would not become smaller than the original string, your method should return
  the original string. You can assume the string has only uppercase and lowercase letters (a - z).
  Hints:#92, #110
+*/
+
+function compression(str) {
+  let len = str.len;
+  if (len < 1) {
+    return '';
+
+  }
+  let currChar = str.charAt(0);
+  let currCount = 1;
+
+  let compressedString = '';
+
+  for (let i=1; i<str.length; i++) {
+   let ch = str.charAt(i);
+   if (ch === currChar) {
+     currCount++;
+   } else {
+     compressedString += currChar + currCount;
+     currChar = ch;
+     currCount = 1;
+   }
+  }
+
+  compressedString += currChar + currCount;
+
+  return (compressedString.length < str.length) ?  compressedString : str;
+}
+
+assert(compression('aabcccccaaa', 'a2blc5a3'));
+
+/**
  1.7
  Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4
  bytes, write a method to rotate the image by 90 degrees. Can you do this in place?

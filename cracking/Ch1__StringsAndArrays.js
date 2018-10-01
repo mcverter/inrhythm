@@ -160,8 +160,32 @@ assert(isPalindrome("tacocat"));
  Output: True (permutations: "taco cat", "atco eta", etc.)
  Hints: #106, #121, #134, #136
  1.5
-
+madamimadam
  */
+
+function isPermutatedPalindrome(s) {
+  let str = s.toLowerCase();
+  let charHash = {};
+  let oddMiddles = 0;
+  let evenSides = 0;
+
+  for (let i=0; i<str.length;i++){
+    let ch = str.charAt(i);
+    charHash[ch] = charHash[ch] ? charHash[ch] + 1 : 1
+  }
+
+
+  for (ch in charHash) {
+    if (charHash[ch] % 2 === 0) {
+      evenSides++;
+    } else {
+      oddMiddles++;
+    }
+  }
+  return (evenSides && oddMiddles<=2);
+}
+
+assert(isPermutatedPalindrome("Tact Coa")); // 'taco cat'
 
 /**
  One Away: There are three types of edits that can be performed on strings: insert a character,

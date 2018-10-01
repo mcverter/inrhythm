@@ -133,17 +133,8 @@ function urlify(str) {
 assert.equal(urlify('Mr John Smith'), 'Mr%20John%20Smith');
 
 /**
- Cracking the Coding Interview, 6th EditionChapter 1 I Arrays and Strings
- 1.4
- Palindrome Permutation: Given a string, write a function to check if it is a permutation of a palin­
- drome. A palindrome is a word or phrase that is the same forwards and backwards. A permutation
- is a rearrangement of letters. The palindrome does not need to be limited to just dictionary words.
- EXAMPLE
- Input: Tact Coa
- Output: True (permutations: "taco cat", "atco eta", etc.)
- Hints: #106, #121, #134, #136
- 1.5
- */
+ Test Palindrome
+*/
 
 function isPalindrome(str) {
   const len = str.length;
@@ -155,6 +146,22 @@ function isPalindrome(str) {
   }
   return true;
 }
+
+assert(isPalindrome("tacocat"));
+
+/**
+ Cracking the Coding Interview, 6th EditionChapter 1 I Arrays and Strings
+ 1.4
+ Palindrome Permutation: Given a string, write a function to check if it is a permutation of a palin­
+ drome. A palindrome is a word or phrase that is the same forwards and backwards. A permutation
+ is a rearrangement of letters. The palindrome does not need to be limited to just dictionary words.
+ EXAMPLE
+ Input: Tact Coa
+ Output: True (permutations: "taco cat", "atco eta", etc.)
+ Hints: #106, #121, #134, #136
+ 1.5
+
+ */
 
 /**
  One Away: There are three types of edits that can be performed on strings: insert a character,

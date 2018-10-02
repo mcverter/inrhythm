@@ -293,16 +293,73 @@ function compression(str) {
 assert(compression('aabcccccaaa', 'a2blc5a3'));
 
 /**
+ *
  1.7
  Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4
  bytes, write a method to rotate the image by 90 degrees. Can you do this in place?
  Hints: #51, # 100
+
+ (-x, y)   |  (x, y)
+ ___________________
+
+ (-x, -y)  |  (x, -y)
+
+ =======================
+
+ (-x, -y)   |  (-x, y)
+________________________
+ (x, -y)    |  (x, y)
+ */
+
+function rotatePixel(x, y, square) {
+  let temp = square[x][y];
+
+  square[x][y] = square[-x][y];
+  square[-x][-y] = square[-x][-y];
+  square[-x][-y] = square[x][-y];
+  square[x][-y] = temp;
+}
+
+/**
  1.8
  Zero Matrix: Write an algorithm such that if an element in an MxN matrix is 0, its entire row and
  column are set to 0.
  Hints:#17, #74, #702
+ */
+
+
+function zeroOut(matrix) {
+  let columns = Array(matrix.length);
+  let rows = Array(matrix[0].length);
+  columns.fill(1);
+  rows.fill(1);
+
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; i < matrix[0].length; i++) {
+      if ([i][j] === 0) {
+        columns[i] = 0;
+        rows[j] = 0;
+      }
+    }
+  }
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; i < matrix[0].length; i++) {
+      if (columns[i]===0 || rows[j] === 0) {
+        matrix[i][j] = 0;
+      }
+    }
+  }
+}
+/**(
  1.9
  String Rotation:Assumeyou have a method isSubstringwhich checks if one word is a substring
  of another. Given two strings, sl and s2, write code to check if s2 is a rotation of sl using only one
  call to isSubstring (e.g., "waterbottle" is a rotation of"erbottlewat").
  */
+
+function isSubstring(needle, haystack) {
+  return haystack.indexOf(needle) > -1;
+}
+function isRotation(str1, str2) {
+  return isSubstring(str2, str1 + str1)
+}

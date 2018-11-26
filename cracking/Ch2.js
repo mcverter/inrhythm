@@ -106,6 +106,30 @@ CrackingTheCodinglnterview.com J 6th Edition
 However, you should remember that recursive algorithms take at least O ( n) space, where n is the depth
 of the recursive call. All recursive algorithms can be implemented iteratively, although they may be much
 more complex.
+*/
+
+function removeDuplicates(head) {
+  let seen = {};
+  let previous = head;
+  let current = head.next;
+
+  while (current) {
+    let val = current.value;
+    if (seen[val]) {
+      previous.next = current.next;
+      current = current.next;
+    } else {
+      seen[val] = true;
+    }
+    previous = current;
+    current = previous.next;
+  }
+}
+
+function removeDuplicatesNoBuffer(head) {
+
+}
+/*
 Interview Questions
 2.1
 R�mov� Dups! Write code to remove duplicates from an unsorted linked list.
@@ -113,9 +137,32 @@ FOLLOW UP
 How would you solve this problem if a temporary buffer is not allowed?
 Hints: #9, #40
 ................................................... pg208
+*/
+
+/*
 2.2
 Return Kth to Last: Implement an algorithm to find the kth to last element of a singly linked list.
 Hints:#8, #25, #41, #67, #126
+*/
+
+function deleteK2L(head, k) {
+  let current = head;
+
+  for (let i =0; i<k-1 && current !== null ;k++) {
+    current = current.next;
+  }
+
+  let k2l = head;
+
+  while (current.next !== null) {
+    k2l=k2l.next;
+    current = current.next;
+  }
+
+  console.log(k2l.value);
+}
+
+/*
 2.3
 Delete Middle Node: Implement an algorithm to delete a node in the middle (i.e., any node but
 the first and last node, not necessarily the exact middle) of a singly linked list, given only access to
@@ -124,6 +171,14 @@ EXAMPLE
 lnput:the node c from the linked lista->b->c->d->e->f
 Result: nothing is returned, but the new linked list looks like a->b->d->e- >f
 Hints:#72
+*/
+function deleteFromMiddle(middleNode){
+  middleNode.value = middleNode.next.value;
+  middleNode.next = middleNode.next.next;
+}
+
+
+/*
 •-----"•·•m. �---··�
 2.4
 ••··�·-''"•-�mm••·*'9
@@ -135,6 +190,26 @@ EXAMPLE
 Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition= 5]
 Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
 Hints: #3, #24
+
+*/
+
+function partitionAroundValue(head, part) {
+  let moreThan = new Node();
+  let lessThan  = new Node();
+  lessThan.next = moreThan;
+
+  let runner = head;
+  while (runner !== null) {
+    let val = runner.value;
+    if (val < part) {
+
+    } else {
+      
+    }
+  }
+
+}
+/*
 94
 •••••••••••••••••••••
 Cracking the Coding Interview, 6th EditionChapter 2 I Linked Lists
